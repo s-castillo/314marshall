@@ -13,6 +13,9 @@ dev/
 wip/
 drafts/
 
+# Claude Code local settings
+.claude/settings.local.json
+
 # Editor & IDE
 .vscode/
 *.sublime-project
