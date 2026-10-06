@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>314 Marshall Designs — Coming Soon</title>
+  <meta name="description" content="314 Marshall Designs — Product & UI/UX design consulting based in San Antonio, TX. Launching soon." />
+
+  <!-- EB Garamond for body typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Reset ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ─── Font stacks ────────────────────────────────────────── */
+    :root {
+      --font-headline: "Gill Sans", "Gill Sans MT", "Myriad Pro", Calibri, Arial, sans-serif;
+      --font-body:     "EB Garamond", Garamond, "Times New Roman", serif;
+
+      /* Color palette — accent sampled from warm San Antonio urban tones  */
+      /* Burnt sienna #C45C26 on white = 4.6:1 (AA) / on near-black = 8.9:1 (AAA) */
+      --color-accent:     #C45C26;
+      --color-accent-lt:  #E07A46;
+      --color-dark:       #111111;
+      --color-overlay:    rgba(10, 8, 6, 0.58);
+      --color-white:      #FFFFFF;
+      --color-muted:      rgba(255, 255, 255, 0.72);
+
+      --transition-slide: 1.4s ease-in-out;
+      --slide-duration:   6000ms;
+    }
+
+    /* ─── Base ───────────────────────────────────────────────── */
+    html, body {
+      height: 100%;
+      font-family: var(--font-body);
+      background: var(--color-dark);
+      color: var(--color-white);
+      overflow: hidden;
+    }
+
+    /* ─── Slideshow ──────────────────────────────────────────── */
+    .slideshow {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity var(--transition-slide);
+      will-change: opacity;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    /* dark overlay on each slide */
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--color-overlay);
+    }
+
+    /* ─── Accent bar ─────────────────────────────────────────── */
+    .accent-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-lt) 100%);
+      z-index: 10;
+    }
+
+    /* ─── Page layout ────────────────────────────────────────── */
+    .page {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+
+    /* ─── Logo ───────────────────────────────────────────────── */
+    .logo-wrap {
+      position: fixed;
+      top: 1.5rem;
+      left: 1.75rem;
+      z-index: 10;
+    }
+
+    .logo-wrap img {
+      height: 52px;
+      width: auto;
+      filter: drop-shadow(0 2px 12px rgba(0,0,0,0.5));
+    }
+
+    /* ─── Eyebrow ────────────────────────────────────────────── */
+    .eyebrow {
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: clamp(0.65rem, 1.2vw, 0.8rem);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--color-accent-lt);
+      margin-bottom: 1rem;
+    }
+
+    /* ─── Headline ───────────────────────────────────────────── */
+    .headline {
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: clamp(6rem, 18vw, 15rem);
+      line-height: 1.0;
+      letter-spacing: -0.01em;
+      color: var(--color-white);
+      text-shadow: 0 4px 32px rgba(0,0,0,0.6);
+      margin-bottom: 1.75rem;
+    }
+
+    .headline .accent {
+      color: var(--color-accent-lt);
+    }
+
+    /* ─── Tagline ────────────────────────────────────────────── */
+    .tagline {
+      font-family: var(--font-body);
+      font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--color-muted);
+      max-width: 560px;
+      line-height: 1.55;
+      margin-bottom: 0.75rem;
+    }
+
+    .location {
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: clamp(0.7rem, 1.3vw, 0.85rem);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-accent-lt);
+      opacity: 0.85;
+    }
+
+    /* ─── Divider ────────────────────────────────────────────── */
+    .divider {
+      width: 56px;
+      height: 2px;
+      background: var(--color-accent);
+      margin: 2.25rem auto;
+      border: none;
+      border-radius: 1px;
+    }
+
+    /* ─── Sub-copy ───────────────────────────────────────────── */
+    .sub-copy {
+      font-family: var(--font-body);
+      font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+      color: var(--color-muted);
+      max-width: 480px;
+      line-height: 1.7;
+    }
+
+    /* ─── Slide counter ──────────────────────────────────────── */
+    .slide-dots {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      padding: 0;
+    }
+
+    .dot.active {
+      background: var(--color-accent-lt);
+      transform: scale(1.4);
+    }
+
+    /* ─── Responsive adjustments ─────────────────────────────── */
+    @media (max-width: 600px) {
+      .logo-wrap img { height: 52px; }
+      .logo-wrap { margin-bottom: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Accent top bar -->
+  <div class="accent-bar" aria-hidden="true"></div>
+
+  <!-- Background slideshow -->
+  <div class="slideshow" aria-hidden="true" id="slideshow"></div>
+
+  <!-- Slide indicator dots -->
+  <div class="slide-dots" id="dots" role="tablist" aria-label="Slideshow position"></div>
+
+  <!-- Main content -->
+  <main class="page">
+
+    <div class="logo-wrap">
+      <img
+        src="imgs/314marshall-logo-white-logo-text.png"
+        alt="314 Marshall Designs"
+        onerror="this.src='imgs/314marshall-logo-white.png'"
+      />
+    </div>
+
+    <p class="eyebrow">Local Design Consulting</p>
+
+    <h1 class="headline">
+      Coming <span class="accent">Soon.</span>
+    </h1>
+
+    <p class="tagline">
+      Thoughtful product and UI/UX design built for the way people actually work. Looking to serve the local small business looking to take the next step. 
+    </p>
+
+    <p class="location">San Antonio, Texas</p>
+
+    <hr class="divider" />
+
+    <p class="sub-copy">
+      We're putting the finishing touches on something worth the wait.
+      <br>Check back soon!
+    </p>
+
+  </main>
+
+  <script>
+    // ─── Image list ────────────────────────────────────────────
+    const images = [
+      "imgs/bkgd-san-antonio-monument-downtown.jpg",
+      "imgs/bkgd-alley-way-san-antonio.jpg",
+      "imgs/bkgd-blue-star-complex.jpg",
+      "imgs/bkgd-south-flores-building.jpg",
+      "imgs/bkgd-abandoned-businesses-san-antonio.jpg",
+      "imgs/bkgd-graffiti-lion.jpg",
+      "imgs/bkgd-graffiti-houston-mural-1.jpg",
+      "imgs/bkgd-bomber-man-graffiti.jpg",
+      "imgs/bkgd-letterpress-type-sample-poster.jpg",
+      "imgs/bkgd-letterpress-presses-houston-museum.jpg",
+      "imgs/bkgd-letterpress-type-organized.jpg",
+      "imgs/bkgd-lettepress-works-collage.jpg",
+      "imgs/bkgd-studio-easel-drawing.jpg",
+      "imgs/bkgd-sketchbook-314marshall.jpg",
+      "imgs/bkgd-sktechbook-1.jpg",
+      "imgs/bkgd-sktechbook-2.jpg",
+      "imgs/bkgd-sketchbook-pattern-1.jpg",
+      "imgs/bkgd-sphere-sketch-1.jpg",
+      "imgs/bkgd-sphere-sketch-2.jpg",
+      "imgs/bkgd-sphere-sketch-3.jpg",
+      "imgs/bkgd-brick-complex.jpg",
+      "imgs/bkgd-brick-complex-2.jpg",
+      "imgs/bkgd-brick-complex-3.jpg",
+      "imgs/bkgd-brick-complex-4.jpg",
+      "imgs/bkgd-bridge-new-braunfels.jpg",
+      "imgs/bkgd-devils-backbone-tavern.jpg",
+      "imgs/bkgd-ft-stockton-mountains.jpg",
+      "imgs/bkgd-perdenales-falls-cliff-1.jpg",
+      "imgs/bkgd-perdenales-falls-cliff-2.jpg",
+      "imgs/bkgd-rocks-1.jpg",
+      "imgs/bkgd-rocks-2.jpg",
+      "imgs/bkgd-rocks-3.jpg",
+      "imgs/bkgd-rocks-4.jpg",
+      "imgs/bkgd-paintcans.jpg",
+      "imgs/bkgd-antique-store-old-tins.jpg",
+      "imgs/bkgd-doughnut-bakery.jpg",
+      "imgs/bkgd-florida-small-town-diner.jpg",
+      "imgs/bkgd-tarpley-camper.jpg",
+      "imgs/bkgd-vintage-houston-map.jpg",
+    ];
+
+    // Shuffle so the order feels fresh each visit
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+    shuffle(images);
+
+    const DURATION   = 6000;   // ms per slide
+    const FADE_TIME  = 1400;   // matches CSS transition
+    const MAX_DOTS   = 12;     // cap dot count for very large sets
+
+    const slideshowEl = document.getElementById("slideshow");
+    const dotsEl      = document.getElementById("dots");
+
+    let current = 0;
+    let slides  = [];
+    let dots    = [];
+    let timer   = null;
+
+    // Pre-build slide + dot elements
+    images.forEach((src, i) => {
+      const slide = document.createElement("div");
+      slide.className = "slide";
+      slide.style.backgroundImage = `url('${src}')`;
+      slideshowEl.appendChild(slide);
+      slides.push(slide);
+
+      if (i < MAX_DOTS) {
+        const dot = document.createElement("button");
+        dot.className = "dot";
+        dot.setAttribute("role", "tab");
+        dot.setAttribute("aria-label", `Slide ${i + 1}`);
+        dot.addEventListener("click", () => goTo(i));
+        dotsEl.appendChild(dot);
+        dots.push(dot);
+      }
+    });
+
+    function goTo(index) {
+      slides[current].classList.remove("active");
+      if (dots[current]) dots[current].classList.remove("active");
+
+      current = (index + slides.length) % slides.length;
+
+      slides[current].classList.add("active");
+      if (dots[current]) dots[current].classList.add("active");
+    }
+
+    function next() {
+      goTo(current + 1);
+    }
+
+    function startTimer() {
+      clearInterval(timer);
+      timer = setInterval(next, DURATION);
+    }
+
+    // Init
+    goTo(0);
+    startTimer();
+
+    // Pause on user dot interaction, resume after
+    dotsEl.addEventListener("click", () => {
+      startTimer(); // reset cadence after manual jump
+    });
+
+    // Preload next image for smoother transitions
+    function preload(index) {
+      const idx = (index + 1) % images.length;
+      const img = new Image();
+      img.src = images[idx];
+    }
+    setInterval(() => preload(current), DURATION - FADE_TIME - 200);
+  </script>
+
+</body>
+</html>
