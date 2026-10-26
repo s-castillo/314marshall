@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/j4v23eek323v/public_html/
+    - /bin/cp -r index.html $DEPLOYPATH
+    - /bin/cp -r imgs $DEPLOYPATH
